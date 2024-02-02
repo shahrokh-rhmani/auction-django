@@ -19,8 +19,7 @@ def index(request):
 
     try:
         if request.user.is_authenticated:
-            user = User.objects.get(username=request.user)
-            print('iiiiii', request.user)
+            user = User.objects.get(username=request.user.username)
 
             w = Watchlist.objects.filter(user_id=user)
             watchlist = Auction.objects.none()
