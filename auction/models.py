@@ -3,17 +3,16 @@ from django.db import models
 
 #     UserDetails
 class UserDetails(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    balance = models.DecimalField(max_digits=6, decimal_places=2)
-    cellphone = models.CharField(max_length=14)
-    address = models.CharField(max_length=255)
-    town = models.CharField(max_length=45)
-    post_code = models.CharField(max_length=45)
-    country = models.CharField(max_length=45)
+    user_id = models.ForeignKey(User,  blank=True, null=True, on_delete=models.CASCADE)
+    balance = models.DecimalField(max_digits=6, blank=True, null=True, decimal_places=2)
+    cellphone = models.CharField(max_length=14, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    town = models.CharField(max_length=45, blank=True, null=True)
+    post_code = models.CharField(max_length=45, blank=True, null=True)
+    country = models.CharField(max_length=45, blank=True, null=True)
 
     def __str__(self):
-        user = User.objects.get(id=self.user_id)
-        return "id=" + str(self.pk) + " username=" + user.username + " email=" + user.email
+        return self.user_id.username
 
 
 class Product(models.Model):

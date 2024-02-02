@@ -18,8 +18,9 @@ def index(request):
     auctions = Auction.objects.filter(time_ending__gte=datetime.now()).order_by('time_starting')
 
     try:
-        if request.session['username']:
-            user = User.objects.get(username=request.session['username'])
+        if request.user.is_authenticated:
+            user = User.objects.get(username=request.user)
+            print('iiiiii', request.user)
 
             w = Watchlist.objects.filter(user_id=user)
             watchlist = Auction.objects.none()

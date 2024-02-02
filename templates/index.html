@@ -57,7 +57,7 @@
         </ul>
 
         <ul id="right_navbar" class="navbar-nav ml-auto">
-            {% if request.session.useranme %}
+            {% if user.is_authenticated %}
 
                 {% include "home.html" %}
             
