@@ -40,7 +40,7 @@ class Product(models.Model):
 
 class Auction(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    number_or_bids = models.IntegerField()
+    number_of_bids = models.IntegerField()
     time_starting = models.DateTimeField()
     time_ending = models.DateTimeField()
 
@@ -55,5 +55,23 @@ class Watchlist(models.Model):
     def __str__(self):
         return "USER_ID:" + str(self.user_id) + " AUCTION_ID:" + str(self.auction_id)
     
+
+class Bid(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    bid_time = models.DateTimeField()
+
+    def __str__(self):
+        return f"USER_ID: {self.user_id} AUCTION_ID: {self.auction_id}  {self.bid_time}"
+    
+
+class Chat(models.Model):
+    auction_id = models.ForeignKey(Auction, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    time_sent = models.DateTimeField()
+
+    def __str__(self):
+        return f"AUCTION_ID: {self.auction_id} USER_ID: {self.user_id}"
     
 
