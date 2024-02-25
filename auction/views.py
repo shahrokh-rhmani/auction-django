@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.utils import timezone
 from datetime import datetime
@@ -61,16 +61,19 @@ def bid_page(request, auction_id):
         # if not logged in return to the index page.
         if request.user.is_authenticated:
             # If the auction has't started return to the index page.
-            auction = Auction.objects.filter(id=auction_id)
-            if auction[0].time_starting > timezone.now():
-                return index(request)
+            auction = get_object_or_404(Auction, id=auction_id)
+            if auction.time_starting > timezone.now():
+                return redirect('index')
             user = User.objects.get(username=request.user.username)
+            
 
             stats = []
-            time_left, expired = remaining_time(auction[0])
-            stats.append(time_left) # First element in stats list
 
-            current_cost = 0.20 + (auction[0].number_of_bids * 0.20)
+            time_left, expired = remaining_time(auction)
+            stats.append(time_left) # First element in stats list
+            
+
+            current_cost = 0.20 + (auction.number_of_bids * 0.20)
             current_cost = "%0.2f" % current_cost
             stats.append(current_cost)
 
@@ -88,9 +91,6 @@ def bid_page(request, auction_id):
             else:
                 stats.append(None)
             
-            # Fourth element in stats list
-            chat = Chat.objects.all().order_by('time_sent')
-            stats.append(chat)
 
             # Getting user's watchlist.
             w = Watchlist.objects.filter(user_id=user)
@@ -98,10 +98,12 @@ def bid_page(request, auction_id):
             for item in w:
                 a = Auction.objects.filter(id=item.auction_id.id)
                 watchlist = list(chain(watchlist, a))
+            print('oooiiiiiooo', w)
+            
 
             return render(request, 'bid.html', 
                 {
-                    'auction': auction[0],
+                    'auction': auction,
                     'user': user,
                     'stats': stats,
                     'watchlist': watchlist
@@ -147,10 +149,67 @@ def register_page(request):
     pass
 
 def watchlist(request, auction_id):
-    pass
+    """
+    Adds the auction to the user's watchlist
+
+    Returns
+    -------
+    Function : index(request)
+    """
+    try:
+        if request.user.is_authenticated:
+            user = User.objects.get(username=request.user.username)
+            auction = Auction.objects.filter(id=auction_id)
+
+            w = Watchlist.objects.filter(auction_id=auction_id)
+            if not w:
+                watchlist_item = Watchlist()
+                watchlist_item.auction_id = auction[0]
+                watchlist_item.user_id = user
+                watchlist_item.save()
+            else:
+                w.delete()
+
+            return index(request)
+    except KeyError:
+        return index(request)
+    
+    return index(request)
+
 
 def watchlist_page(request):
-    pass
+    """
+    Disguises the index page to look
+    like a page with the auctions the
+    user is watching.
+
+    Returns
+    -------
+    HTTPResponse
+        The index page with auctions the user is watching.
+    Function : index(request)
+        If the user is not logged in.
+    """
+    try:
+        if request.user.is_authenticated:
+            user = User.objects.get(username=request.user.username)
+            w = Watchlist.objects.filter(user_id=user)
+
+            auctions = Auction.objects.none()
+            for item in w:
+                a = Auction.objects.filter(id=item.auction_id.id, time_ending__gte=timezone.now())
+                auctions = list(chain(auctions, a))
+            return render(request, 'index.html', {
+                'auctions': auctions,
+                'user': user,
+                'watchlist': auctions
+            })
+    
+    except KeyError:
+        return index(request)
+         
+
+
 
 def balance(request):
     pass
