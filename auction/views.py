@@ -85,9 +85,11 @@ def bid_page(request, auction_id):
             
             # Third element in stats list
             latest_bid = Bid.objects.all().order_by('-bid_time')
+            
             if latest_bid:
-                winner = User.objects.filter(id=latest_bid[0].user_id.id)
-                stats.append(winner[0].username)
+                winner = User.objects.get(id=latest_bid[0].user_id.id)
+                stats.append(winner.username)
+                
             else:
                 stats.append(None)
             
@@ -98,7 +100,7 @@ def bid_page(request, auction_id):
             for item in w:
                 a = Auction.objects.filter(id=item.auction_id.id)
                 watchlist = list(chain(watchlist, a))
-            print('oooiiiiiooo', w)
+            print('oooiiiiiooo', watchlist)
             
 
             return render(request, 'bid.html', 
@@ -110,9 +112,9 @@ def bid_page(request, auction_id):
                               
             })
     except KeyError:
-        return index(request)
+        return redirect('index')
     
-    return index(request)
+    # return redirect('index')
 
 
 def comment(request, auction_id):

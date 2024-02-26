@@ -5,7 +5,8 @@
     <link rel="stylesheet" type="text/css" href="/static/css/products.css">
 </head>
 <body>
-{% now "Y-m-d-H-i-s" as todays_date %}
+    
+{% now "Y-m-d-H-i-s" as todays_date %} 
 <div class="container-fluid"> 
     <div id="myCarousel" class="carousel slide" data-interval="false">
         {% for auction in auctions %}
@@ -31,7 +32,7 @@
                         </div>
                         <p class="card-text">{{ auction.product_id.description }}</p>
                         {% if todays_date > auction.time_starting|date:'Y-m-d-H-i-s' %}
-                        
+                      
                         {% endif %}
                         <p class="card-text"><small class="text-muted"> 
                         {% if todays_date > auction.time_starting|date:'Y-m-d-H-i-s' %}
@@ -55,10 +56,10 @@
                                 {% if watchlist|search:auction.id%}
                                 Unwatch
                                 {% else %}
-                                Watch
+                                Watch 
                                 {% endif %}
                             {% else %}
-                                Watch
+                                Watch 
                             {% endif %}
                             </button>
                         </div>
