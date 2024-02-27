@@ -11,14 +11,6 @@ from .transactions import increase_bid, remaining_time
 
 
 def index(request):
-    """
-    The main page of the website
-
-    Returns
-    ------
-    HTTPResponse
-        The index page with the current and future auctions.
-    """
     auctions = Auction.objects.filter(time_ending__gte=datetime.now()).order_by('time_starting')
 
     try:
@@ -32,31 +24,15 @@ def index(request):
                 watchlist = list(chain(watchlist, a))
             
             userDetails = UserDetails.objects.get(user_id=user.id)
-            return render(request, 'index.html', 
+            return render(request, 'listview.html', 
                           {'auctions': auctions, 'balance': userDetails.balance, 'watchlist': watchlist})
     except KeyError:
-        return render(request, 'index.html', {'auctions': auctions})
+        return render(request, 'listview.html', {'auctions': auctions})
     
-    return render(request, 'index.html', {'auctions': auctions})
+    return render(request, 'listview.html', {'auctions': auctions})
 
 
 def bid_page(request, auction_id):
-    """
-    Return the bid page for the
-    selected auction.
-
-    Parametes
-    ---------
-    auction_id : class 'int'
-
-    Returns
-    --------
-    HTTPResponse
-        Return the bidding page for the selected auction.
-    Function : index(request)
-        If the user is not logged in.
-    """
-    print(type(auction_id))
     try:
         # if not logged in return to the index page.
         if request.user.is_authenticated:
@@ -65,13 +41,12 @@ def bid_page(request, auction_id):
             if auction.time_starting > timezone.now():
                 return redirect('index')
             user = User.objects.get(username=request.user.username)
+
             
-
+            
             stats = []
-
             time_left, expired = remaining_time(auction)
             stats.append(time_left) # First element in stats list
-            
 
             current_cost = 0.20 + (auction.number_of_bids * 0.20)
             current_cost = "%0.2f" % current_cost
@@ -85,14 +60,11 @@ def bid_page(request, auction_id):
             
             # Third element in stats list
             latest_bid = Bid.objects.all().order_by('-bid_time')
-            
             if latest_bid:
                 winner = User.objects.get(id=latest_bid[0].user_id.id)
-                stats.append(winner.username)
-                
+                stats.append(winner.username)  
             else:
-                stats.append(None)
-            
+                stats.append(None)            
 
             # Getting user's watchlist.
             w = Watchlist.objects.filter(user_id=user)
@@ -100,15 +72,14 @@ def bid_page(request, auction_id):
             for item in w:
                 a = Auction.objects.filter(id=item.auction_id.id)
                 watchlist = list(chain(watchlist, a))
-            print('oooiiiiiooo', watchlist)
-            
 
-            return render(request, 'bid.html', 
+            return render(request, 'detailview.html', 
                 {
                     'auction': auction,
                     'user': user,
                     'stats': stats,
-                    'watchlist': watchlist
+                    'watchlist': watchlist,
+                    'latest_bid': latest_bid,
                               
             })
     except KeyError:
@@ -121,12 +92,7 @@ def comment(request, auction_id):
     pass
 
 def raise_bid(request, auction_id):
-    auction = Auction.objects.get(id=auction_id)
-    if auction.time_ending < timezone.now():
-        return bid_page(request, auction_id)
-    elif auction.time_starting > timezone.now():
-        return index(request)
-    
+    auction = Auction.objects.get(id=auction_id) 
     try:
         if request.user.is_authenticated:
             user = User.objects.get(username=request.user.username)
@@ -140,43 +106,34 @@ def raise_bid(request, auction_id):
 
                     if current_winner[0].id != user.id:
                         increase_bid(user, auction)
-            return bid_page(request, auction_id)
+            return redirect('bid_page', auction_id) 
     except KeyError:
         return index(request)
     
-    return bid_page(request, auction_id) 
+    return redirect('bid_page') 
 
 
 def register_page(request):
     pass
 
-def watchlist(request, auction_id):
-    """
-    Adds the auction to the user's watchlist
-
-    Returns
-    -------
-    Function : index(request)
-    """
+def watchlist(request, auction_id): # watch or unwatch button
     try:
         if request.user.is_authenticated:
             user = User.objects.get(username=request.user.username)
-            auction = Auction.objects.filter(id=auction_id)
-
+            auction = Auction.objects.get(id=auction_id)
             w = Watchlist.objects.filter(auction_id=auction_id)
             if not w:
                 watchlist_item = Watchlist()
-                watchlist_item.auction_id = auction[0]
+                watchlist_item.auction_id = auction
                 watchlist_item.user_id = user
                 watchlist_item.save()
             else:
                 w.delete()
-
-            return index(request)
+                
+            return redirect('index')
     except KeyError:
-        return index(request)
+        return redirect('index')
     
-    return index(request)
 
 
 def watchlist_page(request):

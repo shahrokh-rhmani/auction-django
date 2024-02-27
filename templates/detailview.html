@@ -1,0 +1,50 @@
+{% extends '_base.html' %}
+
+
+{% block content %}
+    <div class="col-lg  ">
+        <div class="card" style="width: 18rem;">
+            <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text"></p>
+                <div>
+                    {% if stats.2 %}
+                        <small>Time left:</small>
+                        {{ stats.0 }}
+                        {% else %}
+                        <p>Auction Ended! The winner is : {{ stats.3 }}</p>
+                    {% endif %}
+                    <br>
+                    <small>Current bit:</small>
+                    <b>EU {{stats.1}}€</b>
+                    <small>[ {{ auction.number_of_bids }} bids ]</small>
+                </div>
+                <div>
+                    <br>
+                    {% if stats.2 %}
+                            <button type="button" id="b_button" class="btn btn-primary" onclick="location.href='/bid/{{auction.id}}/raise_bid'">
+                                    Bid 
+                            </button>
+                    {% endif %}
+                </div>
+                <div>
+                    <button type="button" id="w_button" class="btn btn-outline-primary watch_button" onclick="location.href='/watchlist/{{auction.id}}'">
+                        {% load custom_tags %}
+                        {% if watchlist %}
+                            {% if watchlist|search:auction.id%}
+                                Unwatch
+                            {% else %}
+                                Watch
+                            {% endif %}
+                        {% else %}
+                            Watch
+                        {% endif %}
+                    </button>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

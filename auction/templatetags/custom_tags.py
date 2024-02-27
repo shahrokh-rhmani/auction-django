@@ -1,5 +1,7 @@
 from django import template
+from datetime import timedelta
 from django.utils import timezone
+from ..models import UserDetails, Bid
 
 register = template.Library()
 
@@ -30,6 +32,9 @@ def search(value, id):
 def time_left(value):
     t = value - timezone.now()
     return t
+
+    
+
 
 @register.filter(name="current_price")
 def current_price(value):
