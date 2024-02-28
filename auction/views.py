@@ -9,6 +9,7 @@ from .models import Auction, UserDetails, Watchlist, Bid, Chat
 
 from .transactions import increase_bid, remaining_time
 
+from django.http import HttpResponseRedirect
 
 def index(request):
     auctions = Auction.objects.filter(time_ending__gte=datetime.now()).order_by('time_starting')
@@ -117,7 +118,6 @@ def register_page(request):
     pass
 
 def watchlist(request, auction_id): # watch or unwatch button
-    try:
         if request.user.is_authenticated:
             user = User.objects.get(username=request.user.username)
             auction = Auction.objects.get(id=auction_id)
@@ -129,10 +129,12 @@ def watchlist(request, auction_id): # watch or unwatch button
                 watchlist_item.save()
             else:
                 w.delete()
-                
-            return redirect('index')
-    except KeyError:
-        return redirect('index')
+
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
+            # return redirect('index')     
+            
+            
+
     
 
 
@@ -158,7 +160,7 @@ def watchlist_page(request):
             for item in w:
                 a = Auction.objects.filter(id=item.auction_id.id, time_ending__gte=timezone.now())
                 auctions = list(chain(auctions, a))
-            return render(request, 'index.html', {
+            return render(request, 'listview.html', {
                 'auctions': auctions,
                 'user': user,
                 'watchlist': auctions
