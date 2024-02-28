@@ -28,20 +28,6 @@
                             </button>
                     {% endif %}
                 </div>
-                <div>
-                    <button type="button" id="w_button" class="btn btn-outline-primary watch_button" onclick="location.href='/watchlist/{{auction.id}}'">
-                        {% load custom_tags %}
-                        {% if watchlist %}
-                            {% if watchlist|search:auction.id%}
-                                Unwatch
-                            {% else %}
-                                Watch
-                            {% endif %}
-                        {% else %}
-                            Watch
-                        {% endif %}
-                    </button>
-                </div> 
             </div>
         </div>
     </div>
