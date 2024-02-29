@@ -30,57 +30,53 @@ def listview(request):
 
 
 def bid_page(request, auction_id):
-    try:
-        # if not logged in return to the index page.
-        if request.user.is_authenticated:
-            # If the auction has't started return to the index page.
-            auction = get_object_or_404(Auction, id=auction_id)
-            if auction.time_starting > timezone.now():
-                return redirect('index')
-            user = User.objects.get(username=request.user.username)
+    if request.user.is_authenticated:
+        auction = get_object_or_404(Auction, id=auction_id)
+        if auction.time_starting > timezone.now():
+            return redirect('index')
+        user = User.objects.get(username=request.user.username)
 
             
             
-            stats = []
-            time_left, expired = remaining_time(auction)
-            stats.append(time_left) # First element in stats list
+        stats = []
+        time_left, expired = remaining_time(auction)
+        stats.append(time_left) # First element in stats list
 
-            current_cost = 0.20 + (auction.number_of_bids * 0.20)
-            current_cost = "%0.2f" % current_cost
-            stats.append(current_cost)
+        current_cost = 0.20 + (auction.number_of_bids * 0.20)
+        current_cost = "%0.2f" % current_cost
+        stats.append(current_cost)
 
-            # Second element in stats list
-            if expired < 0: # if auction ended append false.
-                stats.append(False)
-            else:
-                stats.append(True)
+        # Second element in stats list
+        if expired < 0: # if auction ended append false.
+            stats.append(False)
+        else:
+            stats.append(True)
             
-            # Third element in stats list
-            latest_bid = Bid.objects.all().order_by('-bid_time')
-            if latest_bid:
-                winner = User.objects.get(id=latest_bid[0].user_id.id)
-                stats.append(winner.username)  
-            else:
-                stats.append(None)            
+        # Third element in stats list
+        latest_bid = Bid.objects.all().order_by('-bid_time')
+        if latest_bid:
+            winner = User.objects.get(id=latest_bid[0].user_id.id)
+            stats.append(winner.username)  
+        else:
+            stats.append(None)            
 
-            # Getting user's watchlist.
-            w = Watchlist.objects.filter(user_id=user)
-            watchlist = Auction.objects.none()
-            for item in w:
-                a = Auction.objects.filter(id=item.auction_id.id)
-                watchlist = list(chain(watchlist, a))
+        # Getting user's watchlist.
+        w = Watchlist.objects.filter(user_id=user)
+        watchlist = Auction.objects.none()
+        for item in w:
+            a = Auction.objects.filter(id=item.auction_id.id)
+            watchlist = list(chain(watchlist, a))
 
-            return render(request, 'detailview.html', 
-                {
-                    'auction': auction,
-                    'user': user,
-                    'stats': stats,
-                    'watchlist': watchlist,
-                    'latest_bid': latest_bid,
+        return render(request, 'detailview.html', 
+            {
+                'auction': auction,
+                'user': user,
+                'stats': stats,
+                'watchlist': watchlist,
+                'latest_bid': latest_bid,
                               
-            })
-    except KeyError:
-        return redirect('index')
+        })
+
     
 
 
@@ -125,7 +121,7 @@ def watchlist(request, auction_id): # watch or unwatch button
                 w.delete()
 
             return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
-            # return redirect('index')     
+               
             
             
 
