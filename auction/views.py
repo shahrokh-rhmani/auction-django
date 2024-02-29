@@ -29,7 +29,7 @@ def listview(request):
 
 
 
-def bid_page(request, auction_id):
+def detailview(request, auction_id):
     if request.user.is_authenticated:
         auction = get_object_or_404(Auction, id=auction_id)
         if auction.time_starting > timezone.now():
