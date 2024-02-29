@@ -6,31 +6,27 @@ from datetime import datetime
 from itertools import chain
 
 from .models import Auction, UserDetails, Watchlist, Bid, Chat
-
 from .transactions import increase_bid, remaining_time
-
 from django.http import HttpResponseRedirect
 
+
 def index(request):
-    auctions = Auction.objects.filter(time_ending__gte=datetime.now()).order_by('time_starting')
+    auctions = Auction.objects.all()
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.username)
 
-    try:
-        if request.user.is_authenticated:
-            user = User.objects.get(username=request.user.username)
-
-            w = Watchlist.objects.filter(user_id=user)
-            watchlist = Auction.objects.none()
-            for item in w:
-                a = Auction.objects.filter(id=item.auction_id.id)
-                watchlist = list(chain(watchlist, a))
+        w = Watchlist.objects.filter(user_id=user)
+        watchlist = Auction.objects.none()
+        for item in w:
+            a = Auction.objects.filter(id=item.auction_id.id)
+            watchlist = list(chain(watchlist, a))
             
-            userDetails = UserDetails.objects.get(user_id=user.id)
-            return render(request, 'listview.html', 
+        userDetails = UserDetails.objects.get(user_id=user.id)
+        return render(request, 'listview.html', 
                           {'auctions': auctions, 'balance': userDetails.balance, 'watchlist': watchlist})
-    except KeyError:
-        return render(request, 'listview.html', {'auctions': auctions})
+
     
-    return render(request, 'listview.html', {'auctions': auctions})
+
 
 
 def bid_page(request, auction_id):
@@ -86,7 +82,6 @@ def bid_page(request, auction_id):
     except KeyError:
         return redirect('index')
     
-    # return redirect('index')
 
 
 def comment(request, auction_id):
@@ -117,6 +112,7 @@ def raise_bid(request, auction_id):
 def register_page(request):
     pass
 
+
 def watchlist(request, auction_id): # watch or unwatch button
         if request.user.is_authenticated:
             user = User.objects.get(username=request.user.username)
@@ -137,37 +133,22 @@ def watchlist(request, auction_id): # watch or unwatch button
 
     
 
+def watchlist_page(request): 
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.username)
+        w = Watchlist.objects.filter(user_id=user)
 
-def watchlist_page(request):
-    """
-    Disguises the index page to look
-    like a page with the auctions the
-    user is watching.
-
-    Returns
-    -------
-    HTTPResponse
-        The index page with auctions the user is watching.
-    Function : index(request)
-        If the user is not logged in.
-    """
-    try:
-        if request.user.is_authenticated:
-            user = User.objects.get(username=request.user.username)
-            w = Watchlist.objects.filter(user_id=user)
-
-            auctions = Auction.objects.none()
-            for item in w:
-                a = Auction.objects.filter(id=item.auction_id.id, time_ending__gte=timezone.now())
-                auctions = list(chain(auctions, a))
-            return render(request, 'listview.html', {
-                'auctions': auctions,
-                'user': user,
-                'watchlist': auctions
-            })
+        auctions = Auction.objects.none()
+        for item in w:
+            a = Auction.objects.filter(id=item.auction_id.id, time_ending__gte=timezone.now())
+            auctions = list(chain(auctions, a))
+        return render(request, 'listview.html', {
+            'auctions': auctions,
+            'user': user,
+            'watchlist': auctions
+        })
     
-    except KeyError:
-        return index(request)
+
          
 
 
