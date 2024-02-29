@@ -10,7 +10,7 @@ from .transactions import increase_bid, remaining_time
 from django.http import HttpResponseRedirect
 
 
-def index(request):
+def listview(request):
     auctions = Auction.objects.all()
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
