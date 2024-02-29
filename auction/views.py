@@ -87,26 +87,24 @@ def bid_page(request, auction_id):
 def comment(request, auction_id):
     pass
 
+
 def raise_bid(request, auction_id):
     auction = Auction.objects.get(id=auction_id) 
-    try:
-        if request.user.is_authenticated:
-            user = User.objects.get(username=request.user.username)
-            userDetails = UserDetails.objects.get(user_id=user.id)
-            if userDetails.balance > 0.0:
-                latest_bid = Bid.objects.filter(auction_id=auction.id).order_by('-bid_time')
-                if not latest_bid:    
-                    increase_bid(user, auction)
-                else:
-                    current_winner = User.objects.filter(id=latest_bid[0].user_id.id)
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.username)
+        userDetails = UserDetails.objects.get(user_id=user.id)
+        if userDetails.balance > 0.0:
+            latest_bid = Bid.objects.filter(auction_id=auction.id).order_by('-bid_time')
+            if not latest_bid:    
+                increase_bid(user, auction)
+            else:
+                current_winner = User.objects.filter(id=latest_bid[0].user_id.id)
 
-                    if current_winner[0].id != user.id:
-                        increase_bid(user, auction)
-            return redirect('bid_page', auction_id) 
-    except KeyError:
-        return index(request)
+                if current_winner[0].id != user.id:
+                    increase_bid(user, auction)
+        return redirect('bid_page', auction_id) 
+
     
-    return redirect('bid_page') 
 
 
 def register_page(request):
