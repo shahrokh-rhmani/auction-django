@@ -41,6 +41,7 @@ class Product(models.Model):
 class Auction(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     number_of_bids = models.IntegerField()
+    expired = models.BooleanField(default=False)
     time_starting = models.DateTimeField()
     time_ending = models.DateTimeField()
 

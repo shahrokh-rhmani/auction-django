@@ -24,7 +24,7 @@ def increase_bid(user, auction):
     bid.save()
     
     auction.number_of_bids += 1
-    auction.time_ending = timezone.now() + timedelta(minutes=5)
+    auction.time_ending = timezone.now() + timedelta(minutes=1)
     auction.save()
 
 

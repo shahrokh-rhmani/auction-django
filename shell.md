@@ -1,18 +1,14 @@
-##
-from django.shortcuts import  get_object_or_404
-from auction.models import Auction
+## 
 from django.utils import timezone
+from auction.models import Auction
 
-auction = get_object_or_404(Auction, id=3)     
-time_left = auction.time_ending - timezone.now()
-print(time_left.days)
-print(time_left.seconds) 
+print(timezone.now())
+t = Auction.time_starting
+print(t)
 
-##
-    <div class="d-flex justify-content-center">
-        <div class="p-2">
-            <div id="replacement">
-                {% include 'products.html' %}
-            </div>
-        </div>
-    </div>
+a = Auction.objects.all().first()
+print(a.time_starting)
+for item in a :
+    print(item)
+
+[x for x in Auction().__dict__.keys() if not x.startswith('_')]

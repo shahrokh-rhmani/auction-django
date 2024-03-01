@@ -9,11 +9,11 @@
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text"></p>
                 <div>
-                    {% if stats.2 %}
+                    {% if not stats.2 %}
                         <small>Time left:</small>
                         {{ stats.0 }}
-                        {% else %}
-                        <p>Auction Ended! The winner is : {{ stats.3 }}</p>
+                    {% else %}
+                        <p>Auction Ended! The winner is : {{  stats.3 }}</p>
                     {% endif %}
                     <br>
                     <small>Current bit:</small>
@@ -22,7 +22,7 @@
                 </div>
                 <div>
                     <br>
-                    {% if stats.2 %}
+                    {% if not stats.2 %}
                             <button type="button" id="b_button" class="btn btn-primary" onclick="location.href='/bid/{{auction.id}}/raise_bid'">
                                     Bid 
                             </button>

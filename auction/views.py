@@ -15,6 +15,7 @@ def listview(request):
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
 
+
         w = Watchlist.objects.filter(user_id=user)
         watchlist = Auction.objects.none()
         for item in w:
@@ -26,9 +27,6 @@ def listview(request):
                           {'auctions': auctions, 'balance': userDetails.balance, 'watchlist': watchlist})
 
     
-
-
-
 def detailview(request, auction_id):
     if request.user.is_authenticated:
         auction = get_object_or_404(Auction, id=auction_id)
@@ -36,24 +34,26 @@ def detailview(request, auction_id):
             return redirect('index')
         user = User.objects.get(username=request.user.username)
 
+
             
             
         stats = []
         time_left, expired = remaining_time(auction)
-        stats.append(time_left) # First element in stats list
+        stats.append(time_left) # index 0
+
 
         current_cost = 0.20 + (auction.number_of_bids * 0.20)
         current_cost = "%0.2f" % current_cost
-        stats.append(current_cost)
+        stats.append(current_cost) # index 1
 
-        # Second element in stats list
-        if expired < 0: # if auction ended append false.
-            stats.append(False)
-        else:
+        if expired < 0: # index 2
             stats.append(True)
-            
-        # Third element in stats list
-        latest_bid = Bid.objects.all().order_by('-bid_time')
+            auction.expired = True
+            auction.save()
+        else:
+            stats.append(False)
+
+        latest_bid = Bid.objects.all().order_by('-bid_time') # index 3
         if latest_bid:
             winner = User.objects.get(id=latest_bid[0].user_id.id)
             stats.append(winner.username)  
@@ -79,11 +79,6 @@ def detailview(request, auction_id):
 
     
 
-
-def comment(request, auction_id):
-    pass
-
-
 def raise_bid(request, auction_id):
     auction = Auction.objects.get(id=auction_id) 
     if request.user.is_authenticated:
@@ -101,12 +96,6 @@ def raise_bid(request, auction_id):
         return redirect('bid_page', auction_id) 
 
     
-
-
-def register_page(request):
-    pass
-
-
 def watchlist(request, auction_id): # watch or unwatch button
         if request.user.is_authenticated:
             user = User.objects.get(username=request.user.username)
@@ -123,9 +112,6 @@ def watchlist(request, auction_id): # watch or unwatch button
             return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
                
             
-            
-
-    
 
 def watchlist_page(request): 
     if request.user.is_authenticated:
@@ -141,6 +127,7 @@ def watchlist_page(request):
             'user': user,
             'watchlist': auctions
         })
+    return httpRespones()
     
 
          
@@ -163,4 +150,10 @@ def login_page(request):
     pass
 
 def logout_page(request):
+    pass
+
+def comment(request, auction_id):
+    pass
+
+def register_page(request):
     pass

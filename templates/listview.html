@@ -3,7 +3,7 @@
 
 
 {% block content %}
-{% now "Y-m-d-H-i-s" as todays_date %}
+
 {% for auction in auctions %}
                 <div class="col-lg ">
                     <div class="card" style="width: 18rem;">
@@ -13,12 +13,10 @@
                             <p class="card-text">{{ auction.product_id.description }}</p>
                             <p class="card-text"><small class="text-muted">
                                 Auction starts: {{ auction.time_starting|date:'d-m-Y H:i:s' }}</br>
-                                Auction ends in: {{ auction.time_ending|time_left }} 
                             </small></p>
                             
-                            {% if todays_date > auction.time_starting|date:'Y-m-d-H-i-s' %}
-                            <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">Bid Now</button>  
-                            {% endif %}
+                            <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">Bid Now</button> 
+
                             
                             <!-- WATCH BUTTON -->
                             <div>
