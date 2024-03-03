@@ -15,12 +15,17 @@
                                 Auction starts: {{ auction.time_starting|date:'d-m-Y H:i:s' }}</br>
                             </small></p>
                             
-                            <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">Bid Now</button> 
-
+                            {% if auction.expired %}
+                                expired auction
+                            {% else %}
+                                <button type="button" class="btn btn-primary bid_now_button " onclick="location.href='/bid/{{auction.id}}'">Bid Now</button> 
+                            {% endif %}
+                            
+                            
                             
                             <!-- WATCH BUTTON -->
                             <div>
-                                <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/watchlist/{{auction.id}}'">
+                                <button type="button" class="btn btn-outline-primary watch_button mt-4" onclick="location.href='/watchlist/{{auction.id}}'">
                                 {% if watchlist %}
                                     {% if watchlist|search:auction.id%}
                                     Unwatch
