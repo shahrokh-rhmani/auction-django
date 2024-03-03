@@ -30,9 +30,14 @@ def search(value, id):
 
 
 @register.filter(name="time_left")
-def time_left(time_ending):
-    t = time_ending - timezone.now()
-    return t
+def time_left(value):
+    t = value - timezone.now()
+    days, seconds = t.days, t.seconds
+    hours = days * 24 + seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+    st = str(days) + "d " + str(hours) + "h " + str(minutes) + "m " + str(seconds) + "s"
+    return st
 
     
 

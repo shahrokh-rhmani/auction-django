@@ -11,8 +11,9 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ auction.product_id.title }}</h5>
                             <p class="card-text">{{ auction.product_id.description }}</p>
+                            
                             <p class="card-text"><small class="text-muted">
-                                Auction starts: {{ auction.time_starting|date:'d-m-Y H:i:s' }}</br>
+                                Auction starts: {{ auction.time_starting|time_left }}</br>
                             </small></p>
                             
                             {% if auction.expired %}
