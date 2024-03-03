@@ -36,8 +36,11 @@ def time_left(value):
     hours = days * 24 + seconds // 3600
     minutes = (seconds % 3600) // 60
     seconds = seconds % 60
-    st = str(days) + "d " + str(hours) + "h " + str(minutes) + "m " + str(seconds) + "s"
-    return st
+    if value > timezone.now():
+        return str(days) + "d " + str(hours) + "h " + str(minutes) + "m " + str(seconds) + "s"
+    else:
+        return 0
+
 
     
 
