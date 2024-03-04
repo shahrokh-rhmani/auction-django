@@ -1,10 +1,15 @@
 {% extends '_base.html' %}
+{% load static %}
 {% load custom_tags %}
+
+
+{% block scripts %}
+    <script src="{% static 'js/main.js' %}" defer></script>
+{% endblock scripts %}
 
 
 {% block content %}
 {% for auction in auctions %}
-
                 <div class="col-lg ">
                     <div class="card" style="width: 18rem;">
                         <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
@@ -15,11 +20,12 @@
                                 expired auction
                             {% else %}
                                 {% if auction.time_starting|time_left == 0 %}
-                                <button type="button" class="btn btn-primary bid_now_button " onclick="location.href='/bid/{{auction.id}}'">Bid Now</button>
+                                <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">Bid Now</button>
                                 {% else %}
-                                <p class="card-text"><small class="text-muted">
-                                    Auction starts: {{ auction.time_starting|time_left }}</br>
-                                </small></p>
+                                <p class="card-text">
+                                    <small >{{ auction.time_starting|time_left }}</small><br>
+                                    <small class="text-muted" id="event-box">Auction starts: {{ auction.time_starting|date:"M d, Y H:m:s" }}</br></small>   
+                                </p>
                                 {% endif %}                           
                             {% endif %}
                             
