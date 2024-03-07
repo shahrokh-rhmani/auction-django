@@ -1,11 +1,5 @@
 {% extends '_base.html' %}
-{% load static %}
 {% load custom_tags %}
-
-
-{% block scripts %}
-    <script src="{% static 'js/main.js' %}" defer></script>
-{% endblock scripts %}
 
 
 {% block content %}
@@ -24,7 +18,6 @@
                                 {% else %}
                                 <p class="card-text">
                                     <small >{{ auction.time_starting|time_left }}</small><br>
-                                    <small class="text-muted" id="event-box">Auction starts: {{ auction.time_starting|date:"M d, Y H:m:s" }}</br></small>   
                                 </p>
                                 {% endif %}                           
                             {% endif %}

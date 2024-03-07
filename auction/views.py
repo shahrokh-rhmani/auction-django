@@ -5,7 +5,7 @@ from django.utils import timezone
 from datetime import datetime
 from itertools import chain
 
-from .models import Auction, UserDetails, Watchlist, Bid, Chat
+from .models import Auction, UserDetails, Watchlist, Bid
 from .transactions import increase_bid, remaining_time
 from django.http import HttpResponseRedirect
 
@@ -38,27 +38,35 @@ def detailview(request, auction_id):
             
             
         stats = []
+
+
         time_left, expired = remaining_time(auction)
+
         stats.append(time_left) # index 0
 
-
-        current_cost = 0.20 + (auction.number_of_bids * 0.20)
-        current_cost = "%0.2f" % current_cost
-        stats.append(current_cost) # index 1
-
-        if expired < 0: # index 2
+        if expired < 0: # index 1
             stats.append(True)
             auction.expired = True
             auction.save()
         else:
             stats.append(False)
 
+
+
+        current_cost = 0.20 + (auction.number_of_bids * 0.20)
+        current_cost = "%0.2f" % current_cost
+        stats.append(current_cost) # index 2
+
+        
+
         latest_bid = Bid.objects.all().order_by('-bid_time') # index 3
         if latest_bid:
             winner = User.objects.get(id=latest_bid[0].user_id.id)
             stats.append(winner.username)  
         else:
-            stats.append(None)            
+            stats.append(None)   
+
+       
 
         # Getting user's watchlist.
         w = Watchlist.objects.filter(user_id=user)

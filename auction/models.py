@@ -43,7 +43,7 @@ class Auction(models.Model):
     number_of_bids = models.IntegerField()
     expired = models.BooleanField(default=False)
     time_starting = models.DateTimeField()
-    time_ending = models.DateTimeField()
+    time_ending = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return "ID:" + str(self.pk) + " PRODUCT_ID:" + str(self.product_id)
