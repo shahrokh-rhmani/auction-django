@@ -33,13 +33,7 @@ def detailview(request, auction_id):
         if auction.time_starting > timezone.now():
             return redirect('index')
         user = User.objects.get(username=request.user.username)
-
-
-            
-            
         stats = []
-
-
         time_left, expired = remaining_time(auction)
 
         stats.append(time_left) # index 0
@@ -52,8 +46,7 @@ def detailview(request, auction_id):
             stats.append(False)
 
 
-
-        current_cost = 0.20 + (auction.number_of_bids * 0.20)
+        current_cost = 100 + (auction.number_of_bids * 20)
         current_cost = "%0.2f" % current_cost
         stats.append(current_cost) # index 2
 
