@@ -12,19 +12,19 @@ from django.http import HttpResponseRedirect
 
 def listview(request):
     auctions = Auction.objects.all()
-    if request.user.is_authenticated:
-        user = User.objects.get(username=request.user.username)
+
+    user = User.objects.get(username=request.user.username)
 
 
-        w = Watchlist.objects.filter(user_id=user)
-        watchlist = Auction.objects.none()
-        for item in w:
-            a = Auction.objects.filter(id=item.auction_id.id)
-            watchlist = list(chain(watchlist, a))
+    w = Watchlist.objects.filter(user_id=user)
+    watchlist = Auction.objects.none()
+    for item in w:
+        a = Auction.objects.filter(id=item.auction_id.id)
+        watchlist = list(chain(watchlist, a))
             
-        userDetails = UserDetails.objects.get(user_id=user.id)
-        return render(request, 'listview.html', 
-                          {'auctions': auctions, 'balance': userDetails.balance, 'watchlist': watchlist})
+    userDetails = UserDetails.objects.get(user_id=user.id)
+    return render(request, 'listview.html', {
+        'auctions': auctions, 'balance': userDetails.balance, 'watchlist': watchlist})
 
     
 def detailview(request, auction_id):

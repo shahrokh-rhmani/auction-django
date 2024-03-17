@@ -3,49 +3,57 @@
 
 
 {% block content %}
-{% for auction in auctions %}
-                <div class="col-lg ">
-                    <div class="card" style="width: 18rem;">
-                        <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ auction.product_id.title }}</h5>
-                            <p class="card-text">{{ auction.product_id.description }}</p>
-                            {% if auction.expired %}
-                                expired auction
-                                
-
-
-                            {% else %}
-                                {% if auction.time_starting|time_left == 0 %}
-                                <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">Bid Now</button>
-                                {% else %}
-                                <p class="card-text">
-                                    <small >{{ auction.time_starting|time_left }}</small><br>
-                                </p>
-
-                            
-                                {% endif %}  
-                                
-                                <!-- WATCH BUTTON -->
-                            <div>
-                                <button type="button" class="btn btn-outline-primary watch_button mt-4" onclick="location.href='/watchlist/{{auction.id}}'">
-                                    {% if watchlist %}
-                                        Unwatch
+    
+        <section class="m-5">
+            <div class="container">
+                <div class="row">
+                    {% for auction in auctions %}
+                        <div class="col-lg-3 p-2">
+                            <div class="card" style="width: 18rem;">
+                                <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ auction.product_id.title }}</h5>
+                                    <p class="card-text">{{ auction.product_id.description }}</p>
+                                    {% if auction.expired %}
+                                        expired auction
+                                        
+    
+    
                                     {% else %}
-                                        Watch 
+                                        {% if auction.time_starting|time_left == 0 %}
+                                        <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">Bid Now</button>
+                                        {% else %}
+                                        <p class="card-text">
+                                            <small >{{ auction.time_starting|time_left }}</small><br>
+                                        </p>
+    
+                                    
+                                        {% endif %}  
+                                        
+                                        <!-- WATCH BUTTON -->
+                                    <div>
+                                        <button type="button" class="btn btn-outline-primary watch_button mt-4" onclick="location.href='/watchlist/{{auction.id}}'">
+                                            {% if watchlist %}
+                                                Unwatch
+                                            {% else %}
+                                                Watch 
+                                            {% endif %}
+                                        </button>
+                                    </div>
                                     {% endif %}
-                                </button>
+                                    
+                                
+    
+                                
+                                    
+                                </div>
                             </div>
-                            {% endif %}
-                            
-                        
-
-                        
-                            
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
+        </section>
+    
     
     
 
