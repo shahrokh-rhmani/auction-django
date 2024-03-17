@@ -131,33 +131,3 @@ def watchlist_page(request):
             'user': user,
             'watchlist': auctions
         })
-    return httpRespones()
-    
-
-         
-
-
-
-def balance(request):
-    pass
-
-def topup(request):
-    pass
-
-def filter_auctions(request, category):
-    pass
-
-def register(request):
-    pass
-
-def login_page(request):
-    pass
-
-def logout_page(request):
-    pass
-
-def comment(request, auction_id):
-    pass
-
-def register_page(request):
-    pass
