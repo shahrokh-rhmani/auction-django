@@ -7,6 +7,7 @@ from itertools import chain
 
 from .models import Auction, UserDetails, Watchlist, Bid
 from .transactions import increase_bid, remaining_time
+from django.urls import reverse
 from django.http import HttpResponseRedirect
 
 
@@ -49,9 +50,8 @@ def detailview(request, auction_id):
         current_cost = 100 + (auction.number_of_bids * 20)
         current_cost = "%0.2f" % current_cost
         stats.append(current_cost) # index 2
-
-        
-
+    
+    
         latest_bid = Bid.objects.all().order_by('-bid_time') # index 3
         if latest_bid:
             winner = User.objects.get(id=latest_bid[0].user_id.id)
@@ -77,6 +77,9 @@ def detailview(request, auction_id):
                 'latest_bid': latest_bid,
                               
         })
+    
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
     
 
