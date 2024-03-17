@@ -2,35 +2,42 @@
 
 
 {% block content %}
-    <div class="col-lg  ">
-        <div class="card" style="width: 18rem;">
-            <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text"></p>
-                <div>
-                    {% if not stats.1 %} 
-                        <small>Time left:</small>
-                        <small >{{ stats.0 }}</small>
-                    {% else %}
-                        <p>Auction Ended! The winner is : {{  stats.3 }}</p>
-                    {% endif %}
-                    <br>
-                    <small>Current bit:</small>
-                    <b>USD {{stats.2}}$</b> 
-                    <small>[ {{ auction.number_of_bids }} bids ]</small>
-                </div>
-                <div>
-                    <br>
-                    {% if not stats.1 %} 
-                            <button type="button" id="b_button" class="btn btn-primary" onclick="location.href='/bid/{{auction.id}}/raise_bid'">
-                                    Bid 
-                            </button>
-                    {% endif %}
-                </div>
+    <section class="p-5">
+        <div class="container">
+            <div class="row">
+               <div class="col-lg-5">
+                <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
+               </div>
+               <div class="col-lg-7">
+                    <p>{{ auction.product_id.title }}</p>
+                    <!-- {% lorem 3 p  %} -->
+                    <p>{{ auction.product_id.description }}</p>
+                    <div class="m-2">
+                        {% if not stats.1 %} 
+                            <small class="">Time left:</small>
+                            <small >{{ stats.0 }}</small>
+                        {% else %}
+                            <p>Auction Ended! The winner is : {{  stats.3 }}</p>
+                        {% endif %}
+                        <br>
+                        <div class="pt-3">
+                            <small>Current bit:</small>
+                            <b>USD {{stats.2}}$</b> 
+                            <small>[ {{ auction.number_of_bids }} bids ]</small>
+                        </div>
+                    </div>
+                    <div>
+                        <br>
+                        {% if not stats.1 %} 
+                                <button type="button" id="b_button" class="btn btn-primary" onclick="location.href='/bid/{{auction.id}}/raise_bid'">
+                                        Bid 
+                                </button>
+                        {% endif %}
+                    </div>
+               </div> 
             </div>
         </div>
-    </div>
+    </section>
 
-
+    
 {% endblock content %}

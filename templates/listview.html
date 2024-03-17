@@ -12,14 +12,15 @@
                             <div class="card" style="width: 18rem;">
                                 <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ auction.product_id.title }}</h5>
-                                    <p class="card-text">{{ auction.product_id.description }}</p>
+                                    
                                     {% if auction.expired %}
                                         expired auction
                                         
     
     
                                     {% else %}
+                                        <h5 class="card-title">{{ auction.product_id.title }}</h5>
+                                        <p class="card-text">{{ auction.product_id.description|truncatechars:100 }}</p>
                                         {% if auction.time_starting|time_left == 0 %}
                                         <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">Bid Now</button>
                                         {% else %}
