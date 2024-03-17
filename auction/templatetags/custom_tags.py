@@ -5,29 +5,6 @@ from ..models import UserDetails, Bid, Auction
 
 register = template.Library()
 
-@register.filter(name='search')
-def search(value, id):
-    """
-    Linear search of a list
-
-    Parameters
-    ----------
-    value : list
-        A list with key values
-    id : int
-        The key we are searching
-    
-    Returns
-    ------
-    boolean
-        True if the key is found, False otherwise.
-    """
-    for v in value:
-        if v.id == id:
-            return True
-    
-    return False
-
 
 @register.filter(name="time_left")
 def time_left(value):
