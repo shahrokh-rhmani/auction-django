@@ -10,13 +10,13 @@
                     {% for auction in auctions %}
                         <div class="col-lg-3 p-2">
                             <div class="card" style="width: 18rem;">
-                                <img src="/media/{{ auction.product_id.image }}" class="card-img-top" alt="...">
+                                <img src="/media/{{ auction.product.image }}" class="card-img-top" alt="...">
                                 <div class="card-body">
                                     {% if auction.expired %}
                                         expired auction
                                     {% else %}
-                                        <h5 class="card-title">{{ auction.product_id.title }}</h5>
-                                        <p class="card-text">{{ auction.product_id.description|truncatechars:100 }}</p>
+                                        <h5 class="card-title">{{ auction.product.title }}</h5>
+                                        <p class="card-text">{{ auction.product.description|truncatechars:100 }}</p>
                                         {% if request.user.is_authenticated %}
                                             {% if auction.time_starting|time_left == 0 %}
                                             <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='/bid/{{auction.id}}'">

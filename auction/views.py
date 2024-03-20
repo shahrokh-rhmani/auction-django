@@ -20,7 +20,7 @@ def listview(request):
         w = Watchlist.objects.filter(user_id=user)
         watchlist = Auction.objects.none()
         for item in w:
-            a = Auction.objects.filter(id=item.auction_id.id)
+            a = Auction.objects.filter(id=item.auction.id)
             watchlist = list(chain(watchlist, a))
                 
         userDetails = UserDetails.objects.get(user_id=user.id)
@@ -56,7 +56,7 @@ def detailview(request, auction_id):
     
         latest_bid = Bid.objects.all().order_by('-bid_time') # index 3
         if latest_bid:
-            winner = User.objects.get(id=latest_bid[0].user_id.id)
+            winner = User.objects.get(id=latest_bid[0].user.id)
             stats.append(winner.username)  
         else:
             stats.append(None)   
@@ -64,10 +64,10 @@ def detailview(request, auction_id):
        
 
         # Getting user's watchlist.
-        w = Watchlist.objects.filter(user_id=user)
+        w = Watchlist.objects.filter(user=user)
         watchlist = Auction.objects.none()
         for item in w:
-            a = Auction.objects.filter(id=item.auction_id.id)
+            a = Auction.objects.filter(id=item.auction.id)
             watchlist = list(chain(watchlist, a))
 
         return render(request, 'detailview.html', 
@@ -91,7 +91,7 @@ def raise_bid(request, auction_id):
         user = User.objects.get(username=request.user.username)
         userDetails = UserDetails.objects.get(user_id=user.id)
         if userDetails.balance > 0.0:
-            latest_bid = Bid.objects.filter(auction_id=auction.id).order_by('-bid_time')
+            latest_bid = Bid.objects.filter(auction=auction.id).order_by('-bid_time')
             if not latest_bid:    
                 increase_bid(user, auction)
             else:
@@ -109,8 +109,8 @@ def watchlist(request, auction_id): # watch or unwatch button
             w = Watchlist.objects.filter(auction_id=auction_id)
             if not w:
                 watchlist_item = Watchlist()
-                watchlist_item.auction_id = auction
-                watchlist_item.user_id = user
+                watchlist_item.auction = auction
+                watchlist_item.user = user
                 watchlist_item.save()
             else:
                 w.delete()
@@ -126,7 +126,7 @@ def watchlist_page(request):
 
         auctions = Auction.objects.none()
         for item in w:
-            a = Auction.objects.filter(id=item.auction_id.id, time_ending__gte=timezone.now())
+            a = Auction.objects.filter(id=item.auction.id, time_ending__gte=timezone.now())
             auctions = list(chain(auctions, a))
         return render(request, 'listview.html', {
             'auctions': auctions,

@@ -1,26 +1,16 @@
-from .models import UserDetails, Auction, Bid
+from .models import UserDetails, Bid
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 def increase_bid(user, auction):
-    """
-    Removes €1.0 from user.
-    Creates a Bid record
-    Increase the auction's number of bids
-
-    Parameters
-    ----------
-    auction : class 'models.Auction 
-    """
-
-    userDetails = UserDetails.objects.get(user_id=user.id)
+    userDetails = UserDetails.objects.get(user=user.id)
     userDetails.balance = float(userDetails.balance) - 1.0
     user.save()
     
     bid = Bid()
-    bid.user_id = user
-    bid.auction_id = auction
+    bid.user = user
+    bid.auction = auction
     bid.bid_time = timezone.now()
     bid.save()
     
