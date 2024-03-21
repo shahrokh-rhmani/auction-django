@@ -33,8 +33,11 @@
             <li class="nav-item open-modal">
                 <a class="nav-link" href="/balance/">Balance : €{{ balance }}</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+            <li class="nav-item">  
+                <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button class="nav-link" type="submit">logout</button>
+              </form>
             </li>
         {% else %}
         
