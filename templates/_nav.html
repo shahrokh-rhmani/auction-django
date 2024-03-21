@@ -34,12 +34,12 @@
                 <a class="nav-link" href="/balance/">Balance : €{{ balance }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/logout/">logout</a>
+                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             </li>
         {% else %}
         
         <li class="nav-item open-modal">
-            <a id="login" href="#" class="nav-link trigger-btn" data-toggle="modal">Login</a>
+            <a id="login" href="{% url 'login' %}" class="nav-link trigger-btn" data-toggle="modal">Log In</a>
         </li>
         <li class="nav-item">
             <a id="signup" class="nav-link" href="#">Sign up</a>

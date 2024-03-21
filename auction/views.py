@@ -81,13 +81,13 @@ def detailview(request, auction_id):
         })
     
     else:
-        return HttpResponseRedirect(reverse('index'))
+        return redirect('index')
 
     
 
 def raise_bid(request, auction_id):
-    auction = Auction.objects.get(id=auction_id) 
     if request.user.is_authenticated:
+        auction = Auction.objects.get(id=auction_id) 
         user = User.objects.get(username=request.user.username)
         userDetails = UserDetails.objects.get(user_id=user.id)
         if userDetails.balance > 0.0:
@@ -99,7 +99,10 @@ def raise_bid(request, auction_id):
 
                 if current_winner[0].id != user.id:
                     increase_bid(user, auction)
-        return redirect('bid_page', auction_id) 
+        return redirect('bid_page', auction_id)
+    else:
+        return redirect('index')
+
 
     
 def watchlist(request, auction_id): # watch or unwatch button
@@ -115,7 +118,9 @@ def watchlist(request, auction_id): # watch or unwatch button
             else:
                 w.delete()
 
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER')) 
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            return redirect('login') 
                
             
 
@@ -133,3 +138,8 @@ def watchlist_page(request):
             'user': user,
             'watchlist': auctions
         })
+
+    else:
+        return redirect('login')
+
+    
