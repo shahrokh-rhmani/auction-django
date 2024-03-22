@@ -94,7 +94,7 @@ def raise_bid(request, auction_id):
         if not latest_bid:    
             increase_bid(user, auction)
         else:
-            current_winner = User.objects.filter(id=latest_bid[0].user_id.id)
+            current_winner = User.objects.filter(id=latest_bid[0].user.id)
 
             if current_winner[0].id != user.id:
                 increase_bid(user, auction)
