@@ -63,7 +63,7 @@ def detailview(request, auction_id):
 
        
 
-        # Getting user's watchlist.
+        #  watchlist
         w = Watchlist.objects.filter(user=user)
         watchlist = Auction.objects.none()
         for item in w:
@@ -89,16 +89,15 @@ def raise_bid(request, auction_id):
     if request.user.is_authenticated:
         auction = Auction.objects.get(id=auction_id) 
         user = User.objects.get(username=request.user.username)
-        userDetails = UserDetails.objects.get(user_id=user.id)
-        if userDetails.balance > 0.0:
-            latest_bid = Bid.objects.filter(auction=auction.id).order_by('-bid_time')
-            if not latest_bid:    
-                increase_bid(user, auction)
-            else:
-                current_winner = User.objects.filter(id=latest_bid[0].user_id.id)
+        
+        latest_bid = Bid.objects.filter(auction=auction.id).order_by('-bid_time')
+        if not latest_bid:    
+            increase_bid(user, auction)
+        else:
+            current_winner = User.objects.filter(id=latest_bid[0].user_id.id)
 
-                if current_winner[0].id != user.id:
-                    increase_bid(user, auction)
+            if current_winner[0].id != user.id:
+                increase_bid(user, auction)
         return redirect('bid_page', auction_id)
     else:
         return redirect('index')

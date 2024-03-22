@@ -4,9 +4,9 @@ from datetime import timedelta
 
 
 def increase_bid(user, auction):
-    userDetails = UserDetails.objects.get(user=user.id)
-    userDetails.balance = float(userDetails.balance) - 1.0
-    user.save()
+    # userDetails = UserDetails.objects.get(user=user.id)
+    # userDetails.balance = float(userDetails.balance) - 1.0
+    # userDetails.save()
     
     bid = Bid()
     bid.user = user
