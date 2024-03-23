@@ -25,7 +25,7 @@ def listview(request):
                 
         userDetails = UserDetails.objects.get(user_id=user.id)
         return render(request, 'listview.html', {
-            'auctions': auctions, 'balance': userDetails.balance, 'watchlist': watchlist})
+            'auctions': auctions, 'watchlist': watchlist})
     else:
         return render(request, 'listview.html', {'auctions': auctions})
     
