@@ -1,4 +1,4 @@
-from .models import UserDetails, Bid
+from .models import  Bid
 from django.utils import timezone
 from datetime import timedelta
 

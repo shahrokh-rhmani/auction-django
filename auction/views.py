@@ -5,7 +5,7 @@ from django.utils import timezone
 from datetime import datetime
 from itertools import chain
 
-from .models import Auction, UserDetails, Watchlist, Bid
+from .models import Auction, UserInfo, Watchlist, Bid
 from .transactions import increase_bid, remaining_time
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -23,7 +23,6 @@ def listview(request):
             a = Auction.objects.filter(id=item.auction.id)
             watchlist = list(chain(watchlist, a))
                 
-        userDetails = UserDetails.objects.get(user_id=user.id)
         return render(request, 'listview.html', {
             'auctions': auctions, 'watchlist': watchlist})
     else:
