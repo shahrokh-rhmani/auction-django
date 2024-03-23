@@ -5,7 +5,6 @@ from django.db import models
 
 class UserDetails(models.Model):
     user = models.ForeignKey(User,  blank=True, null=True, on_delete=models.CASCADE)
-    balance = models.DecimalField(max_digits=6, blank=True, null=True, decimal_places=2)
     cellphone = models.CharField(max_length=14, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
 
