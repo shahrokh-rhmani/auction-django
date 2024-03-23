@@ -48,17 +48,22 @@ def detailview(request, auction_id):
         else:
             stats.append(False)
 
-
-        current_cost = 100 + (auction.number_of_bids * 20)
+        
+        current_cost = auction.base_price + (auction.number_of_bids * 20)
         current_cost = "%0.2f" % current_cost
         stats.append(current_cost) # index 2
+
     
     
         latest_bid = Bid.objects.all().order_by('-bid_time') # index 3
         if latest_bid:
             winner = User.objects.get(id=latest_bid[0].user.id)
-            stats.append(winner.username)  
+            stats.append(winner.username)
+            auction.final_price = current_cost
+            auction.save()
+
         else:
+            
             stats.append(None)   
 
        
