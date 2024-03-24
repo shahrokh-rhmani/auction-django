@@ -5,7 +5,7 @@ from django.utils import timezone
 from itertools import chain
 
 from .models import Auction, UserInfo, Watchlist, Bid
-from .transactions import bid_increment, time_left_detail
+from .bid import bid_increment, time_left_detail
 from django.http import HttpResponseRedirect
 
 
