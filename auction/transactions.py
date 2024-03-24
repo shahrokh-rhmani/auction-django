@@ -15,12 +15,12 @@ def increase_bid(user, auction):
     bid.save()
     
     auction.count_bids += 1
-    auction.time_ending = timezone.now() + timedelta(minutes=1)
+    auction.time_end = timezone.now() + timedelta(minutes=1)
     auction.save()
 
 
 def remaining_time(auction):
-    time_left = auction.time_ending - timezone.now() 
+    time_left = auction.time_end - timezone.now() 
     days, seconds = time_left.days, time_left.seconds
     hours = days * 24 + seconds // 3600
     minutes = (seconds % 3600) // 60

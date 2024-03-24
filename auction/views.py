@@ -134,7 +134,7 @@ def watchlist_page(request):
 
         auctions = Auction.objects.none()
         for item in w:
-            a = Auction.objects.filter(id=item.auction.id, time_ending__gte=timezone.now())
+            a = Auction.objects.filter(id=item.auction.id, time_end__gte=timezone.now())
             auctions = list(chain(auctions, a))
         return render(request, 'listview.html', {
             'auctions': auctions,
