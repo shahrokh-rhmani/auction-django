@@ -87,7 +87,7 @@ def detailview(request, auction_id):
 
     
 
-def raise_bid(request, auction_id):
+def bid(request, auction_id):
     if request.user.is_authenticated:
         auction = Auction.objects.get(id=auction_id) 
         user = User.objects.get(username=request.user.username)
