@@ -31,7 +31,7 @@ def detailview(request, auction_id):
     if request.user.is_authenticated:
         auction = get_object_or_404(Auction, id=auction_id)
         if auction.time_start > timezone.now():
-            return redirect('index')
+            return redirect('list_view')
         user = User.objects.get(username=request.user.username)
         stats = []
         time_left, expired = time_left_detail(auction)
@@ -83,7 +83,7 @@ def detailview(request, auction_id):
         })
     
     else:
-        return redirect('index')
+        return redirect('list_view')
 
     
 
@@ -102,7 +102,7 @@ def raise_bid(request, auction_id):
                 bid_increment(user, auction)
         return redirect('bid_page', auction_id)
     else:
-        return redirect('index')
+        return redirect('list_view')
 
 
     
