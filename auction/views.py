@@ -100,7 +100,7 @@ def raise_bid(request, auction_id):
 
             if current_winner[0].id != user.id:
                 bid_increment(user, auction)
-        return redirect('bid_page', auction_id)
+        return redirect('detail_view', auction_id)
     else:
         return redirect('list_view')
 
