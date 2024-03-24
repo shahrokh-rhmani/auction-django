@@ -3,11 +3,7 @@ from django.utils import timezone
 from datetime import timedelta
 
 
-def increase_bid(user, auction):
-    # userDetails = UserDetails.objects.get(user=user.id)
-    # userDetails.balance = float(userDetails.balance) - 1.0
-    # userDetails.save()
-    
+def bid_increment(user, auction):
     bid = Bid()
     bid.user = user
     bid.auction = auction

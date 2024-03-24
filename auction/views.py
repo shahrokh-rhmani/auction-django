@@ -6,7 +6,7 @@ from datetime import datetime
 from itertools import chain
 
 from .models import Auction, UserInfo, Watchlist, Bid
-from .transactions import increase_bid, remaining_time
+from .transactions import bid_increment, remaining_time
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
@@ -96,12 +96,12 @@ def raise_bid(request, auction_id):
         
         latest_bid = Bid.objects.filter(auction=auction.id).order_by('-bid_time')
         if not latest_bid:    
-            increase_bid(user, auction)
+            bid_increment(user, auction)
         else:
             current_winner = User.objects.filter(id=latest_bid[0].user.id)
 
             if current_winner[0].id != user.id:
-                increase_bid(user, auction)
+                bid_increment(user, auction)
         return redirect('bid_page', auction_id)
     else:
         return redirect('index')
