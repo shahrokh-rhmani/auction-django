@@ -23,7 +23,7 @@ class Product(models.Model):
 
 class Auction(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    number_of_bids = models.IntegerField()
+    count_bids = models.IntegerField()
     base_price = models.DecimalField(null=True, max_digits=6, decimal_places=2)
     final_price = models.DecimalField(null=True, max_digits=6, decimal_places=2)
     expired = models.BooleanField(default=False)

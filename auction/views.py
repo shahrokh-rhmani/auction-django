@@ -48,7 +48,7 @@ def detailview(request, auction_id):
             stats.append(False)
 
         
-        current_cost = auction.base_price + (auction.number_of_bids * 20)
+        current_cost = auction.base_price + (auction.count_bids * 20)
         current_cost = "%0.2f" % current_cost
         stats.append(current_cost) # index 2
 
