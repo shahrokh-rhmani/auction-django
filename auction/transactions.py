@@ -15,7 +15,7 @@ def bid_increment(user, auction):
     auction.save()
 
 
-def remaining_time(auction):
+def time_left_detail(auction):
     time_left = auction.time_end - timezone.now() 
     days, seconds = time_left.days, time_left.seconds
     hours = days * 24 + seconds // 3600

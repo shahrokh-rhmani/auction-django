@@ -2,12 +2,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.utils import timezone
-from datetime import datetime
 from itertools import chain
 
 from .models import Auction, UserInfo, Watchlist, Bid
-from .transactions import bid_increment, remaining_time
-from django.urls import reverse
+from .transactions import bid_increment, time_left_detail
 from django.http import HttpResponseRedirect
 
 
@@ -36,7 +34,7 @@ def detailview(request, auction_id):
             return redirect('index')
         user = User.objects.get(username=request.user.username)
         stats = []
-        time_left, expired = remaining_time(auction)
+        time_left, expired = time_left_detail(auction)
 
         stats.append(time_left) # index 0
 
