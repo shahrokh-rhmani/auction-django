@@ -1,7 +1,6 @@
 from django import template
-from datetime import timedelta
 from django.utils import timezone
-from ..models import Bid, Auction
+
 
 register = template.Library()
 
