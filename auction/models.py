@@ -27,7 +27,7 @@ class Auction(models.Model):
     base_price = models.DecimalField(null=True, max_digits=6, decimal_places=2)
     final_price = models.DecimalField(null=True, max_digits=6, decimal_places=2)
     expired = models.BooleanField(default=False)
-    time_starting = models.DateTimeField()
+    time_start = models.DateTimeField()
     time_ending = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):

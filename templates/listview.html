@@ -18,13 +18,13 @@
                                         <h5 class="card-title">{{ auction.product.title }}</h5>
                                         <p class="card-text">{{ auction.product.description|truncatechars:100 }}</p>
                                         {% if request.user.is_authenticated %}
-                                            {% if auction.time_starting|time_left == 0 %}
+                                            {% if auction.time_start|time_left == 0 %}
                                             <button type="button" class="btn btn-primary" onclick="location.href='/bid/{{auction.id}}'">
                                                 Bid Now
                                             </button>
                                             {% else %}
                                             <p class="card-text">
-                                                <small >{{ auction.time_starting|time_left }}</small><br>
+                                                <small >{{ auction.time_start|time_left }}</small><br>
                                             </p>
                                             {% endif %}  
                                             

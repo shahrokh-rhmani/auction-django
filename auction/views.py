@@ -32,7 +32,7 @@ def listview(request):
 def detailview(request, auction_id):
     if request.user.is_authenticated:
         auction = get_object_or_404(Auction, id=auction_id)
-        if auction.time_starting > timezone.now():
+        if auction.time_start > timezone.now():
             return redirect('index')
         user = User.objects.get(username=request.user.username)
         stats = []
