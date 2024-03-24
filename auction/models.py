@@ -5,7 +5,7 @@ from django.db import models
 
 class UserInfo(models.Model):
     user = models.ForeignKey(User,  blank=True, null=True, on_delete=models.CASCADE)
-    cellphone = models.CharField(max_length=14, blank=True, null=True)
+    phone = models.CharField(max_length=14, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
