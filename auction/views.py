@@ -38,12 +38,12 @@ def detailview(request, auction_id):
 
         stats.append(time_left) # index 0
 
-        if expired < 0: # index 1
-            stats.append(True)
+        if expired < 0: 
+            stats.append(True) # index 1
             auction.expired = True
             auction.save()
         else:
-            stats.append(False)
+            stats.append(False) # index 1
 
         
         current_cost = auction.base_price + (auction.count_bids * 20)
@@ -52,16 +52,16 @@ def detailview(request, auction_id):
 
     
     
-        latest_bid = Bid.objects.all().order_by('-bid_time') # index 3
+        latest_bid = Bid.objects.all().order_by('-bid_time') 
         if latest_bid:
             winner = User.objects.get(id=latest_bid[0].user.id)
-            stats.append(winner.username)
+            stats.append(winner.username) # index 3
             auction.final_price = current_cost
             auction.save()
 
         else:
             
-            stats.append(None)   
+            stats.append(None) # index 3
 
        
 
@@ -125,7 +125,7 @@ def watchlist(request, auction_id): # watch or unwatch button
                
             
 
-def watchlist_page(request): 
+def watchlistview(request): 
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
         w = Watchlist.objects.filter(user_id=user)
