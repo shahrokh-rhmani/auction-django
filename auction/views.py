@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from itertools import chain
 
-from .models import Auction, UserInfo, Watchlist, Bid
+from .models import Auction, Watchlist, Bid
 from .bid import bid_increment, time_left_detail
 from django.http import HttpResponseRedirect
 
@@ -15,7 +15,7 @@ def listview(request):
         user = User.objects.get(username=request.user.username)
 
 
-        w = Watchlist.objects.filter(user_id=user)
+        w = Watchlist.objects.filter(user=user)
         watchlist = Auction.objects.none()
         for item in w:
             a = Auction.objects.filter(id=item.auction.id)
@@ -110,7 +110,7 @@ def watchlist(request, auction_id): # watch or unwatch button
         if request.user.is_authenticated:
             user = User.objects.get(username=request.user.username)
             auction = Auction.objects.get(id=auction_id)
-            w = Watchlist.objects.filter(auction_id=auction_id)
+            w = Watchlist.objects.filter(auction=auction)
             if not w:
                 watchlist_item = Watchlist()
                 watchlist_item.auction = auction
@@ -128,7 +128,7 @@ def watchlist(request, auction_id): # watch or unwatch button
 def watchlistview(request): 
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user.username)
-        w = Watchlist.objects.filter(user_id=user)
+        w = Watchlist.objects.filter(user=user)
 
         auctions = Auction.objects.none()
         for item in w:
