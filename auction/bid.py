@@ -18,7 +18,6 @@ def bid_increment(user, auction):
 def time_left_detail(auction):
     time_left = auction.time_end - timezone.now() 
     days, seconds = time_left.days, time_left.seconds
-    hours = days * 24 + seconds // 3600
     minutes = (seconds % 3600) // 60
     seconds = seconds % 60
     time_left = str(minutes) + "m " + str(seconds) + "s"
