@@ -46,7 +46,7 @@ def detailview(request, auction_id):
             stats.append(False) # index 1
 
         
-        current_cost = auction.base_price + (auction.count_bids * 20)
+        current_cost = auction.base_price + (auction.count_bids * auction.price_per_bid)
         current_cost = "%0.2f" % current_cost
         stats.append(current_cost) # index 2
 
@@ -87,7 +87,7 @@ def detailview(request, auction_id):
 
     
 
-def bid(request, auction_id):
+def bid(request, auction_id): # bid button
     if request.user.is_authenticated:
         auction = Auction.objects.get(id=auction_id) 
         user = User.objects.get(username=request.user.username)
