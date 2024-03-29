@@ -78,7 +78,6 @@ def detailview(request, auction_id):
                 'user': user,
                 'stats': stats,
                 'watchlist': watchlist,
-                'latest_bid': latest_bid,
                               
         })
     
