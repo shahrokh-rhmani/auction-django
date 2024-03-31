@@ -1,14 +1,18 @@
-## 
-from django.utils import timezone
-from auction.models import Auction
+## check views
+watchlistview =*
+watchlist =*
+bid =*
+listview =*
+detailview =*
+custom_tags.py =*
+bid.py =*
+models.py =*
 
-print(timezone.now())
-t = Auction.time_starting
-print(t)
 
-a = Auction.objects.all().first()
-print(a.time_starting)
-for item in a :
-    print(item)
+## custom_tags.py
+hours =  seconds // 3600  # 86400 // 3600 = 24
+minutes = (seconds % 3600) // 60 # 12600 % 3600 = 1800 ==> 1800 // 60 = 30
 
-[x for x in Auction().__dict__.keys() if not x.startswith('_')]
+
+
+
