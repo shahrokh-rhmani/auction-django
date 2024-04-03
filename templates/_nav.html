@@ -25,7 +25,7 @@
         </form>
       </div>
 
-      <ul id="right_navbar" class="navbar-nav ml-auto">
+      <ul class="navbar-nav">
             {% if user.is_authenticated %}
             <li class="nav-item">
                 <a class="nav-link" href="/watchlist/">Watchlist</a>
@@ -38,11 +38,11 @@
             </li>
         {% else %}
         
-        <li class="nav-item open-modal">
-            <a id="login" href="{% url 'login' %}" class="nav-link trigger-btn" data-toggle="modal">Log In</a>
+        <li class="nav-item">
+            <a href="{% url 'login' %}" class="nav-link trigger-btn" data-toggle="modal">Log In</a>
         </li>
         <li class="nav-item">
-            <a id="signup" class="nav-link" href="#">Sign up</a>
+            <a class="nav-link" href="#">Sign up</a>
         </li>
         {% endif %}
     </ul>
