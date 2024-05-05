@@ -60,7 +60,6 @@ def detailview(request, auction_id):
             auction.save()
 
         else:
-            
             stats.append(None) # index 3
 
        

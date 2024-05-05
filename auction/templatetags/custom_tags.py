@@ -5,6 +5,16 @@ from django.utils import timezone
 register = template.Library()
 
 
+@register.filter(name='search')
+def search(value, id):
+    for v in value:
+        if v.id == id:
+            return True
+    
+    
+
+
+
 @register.filter(name="time_left")
 def time_left(value):
     t = value - timezone.now()

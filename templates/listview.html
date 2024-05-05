@@ -31,22 +31,23 @@
                                             <!-- WATCH BUTTON -->
                                             <div>
                                                 <button type="button" class="btn btn-outline-primary watch_button mt-4" onclick="location.href='/watchlist/{{auction.id}}'">
-                                                    {% if watchlist %}
-                                                        Unwatch
-                                                    {% else %}
-                                                        Watch 
-                                                    {% endif %}
+                                                    
+                                                        {% if watchlist|search:auction.id%}
+                                                            Unwatch
+                                                        {% else %}
+                                                            Watch
+                                                        {% endif %}
+                                                    
+                                                    
+                                                    
+                        
                                                 </button>
                                             </div>
                                         {% else %}
                                             <p>please login</p>
                                         {% endif %}
                                     {% endif %}
-                                    
-                                
-    
-                                
-                                    
+   
                                 </div>
                             </div>
                         </div>
